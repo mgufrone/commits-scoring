@@ -1,0 +1,11 @@
+# A sample Bowerfile
+# Check out https://github.com/42dev/bower-rails#ruby-dsl-configuration for more options
+asset 'bootstrap'
+asset 'admin-lte'
+asset 'bootstrap3-datetimepicker'
+asset 'bootstrap-switch'
+asset 'ionicons'
+asset 'icheck'
+asset 'slimScroll'
+asset 'fontawesome'
+asset 'DataTables'
