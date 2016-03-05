@@ -1,0 +1,20 @@
+.login-box
+  .login-logo
+    %a{:href => "/"}
+      %b> Checklog
+  .login-box-body
+    %p.login-box-msg Sign in to start your session
+    - if flash.any?
+      .alert.alert-danger.alert-error
+        - flash.each do |msg|
+          - msg.shift
+          - msg.each do |message|
+            %li= message
+    %a.btn.btn-block.btn-social.btn-google.btn-lg.btn-flat{:href => "/auth/google_oauth2", "data-no-turbolink"=>"true"}
+      %i.fa.fa-google-plus
+      Sign in using
+      %strong Google+
+    %a.btn.btn-block.btn-social.btn-facebook.btn-lg.btn-flat{:href => "/auth/facebook", "data-no-turbolink"=>"true"}
+      %i.fa.fa-facebook
+      Sign in using
+      %strong Facebook
