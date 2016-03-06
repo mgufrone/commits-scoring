@@ -1,0 +1,19 @@
+%aside.main-sidebar
+  %section.sidebar
+    .user-panel
+      .pull-left.image
+        %img.img-circle{:alt => "User Image", :src => current_user.profile_image}
+      .pull-left.info
+        %p
+        = current_user.full_name
+        %br
+        %a{:href => "#"}
+          %i.fa.fa-circle.text-success
+          Online
+    %form.sidebar-form{:action => "#", :method => "get"}
+      .input-group
+        %input.form-control{:name => "q", :placeholder => "Search...", :type => "text"}
+          %span.input-group-btn
+            %button#search-btn.btn.btn-flat{:name => "search", :type => "submit"}
+              %i.fa.fa-search
+    = render "layouts/navigation"

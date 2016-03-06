@@ -11,6 +11,16 @@
 // about supported directives.
 //
 //= require jquery
+//= require chosen-jquery
 //= require jquery_ujs
+//= require bootstrap/dist/js/bootstrap.min
+//= require moment/min/moment.min
+//= require icheck/icheck.min
+//= require bootstrap3-datetimepicker/build/js/bootstrap-datetimepicker.min
+//= require bootstrap-switch/dist/js/bootstrap-switch.min
+//= require admin-lte/dist/js/app.min
+//= require slimScroll/jquery.slimscroll.min
+//= require DataTables/media/js/jquery.dataTables.min
+//= require DataTables/media/js/dataTables.bootstrap.min
 //= require turbolinks
 //= require_tree .

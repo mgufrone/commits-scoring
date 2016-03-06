@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  use_doorkeeper
+  devise_for :user
+  get '/auth/:provider/callback', to: 'omniauth#create'
+  use_doorkeeper do
+    controllers applications: 'oauth_app'
+  end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

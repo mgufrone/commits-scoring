@@ -1,0 +1,31 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{:charset => "utf-8"}
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
+    %title= @title.present? ? "#{@title} - #{t(:app_name)}" : t(:app_name)
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no", :name => "viewport"}
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  %body.hold-transition.skin-blue.fixed.sidebar-mini
+    .wrapper
+      = render "layouts/header"
+      = render "layouts/sidebar"
+      .content-wrapper
+        %section.content-header
+          %h1
+            Fixed Layout
+            %small Blank example to the fixed layout
+          %ol.breadcrumb
+            %li
+              %a{:href => "#"}
+                %i.fa.fa-dashboard
+                Home
+            %li
+              %a{:href => "#"} Layout
+            %li.active Fixed
+        %section.content
+          = yield
+      = render "layouts/footer"
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true

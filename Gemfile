@@ -48,6 +48,8 @@ gem 'doorkeeper'
 gem 'devise'
 # Authentication gem
 gem 'pundit'
+# Gravatar
+gem 'gravatarify'
 
 # Simple Form
 gem 'simple_form'

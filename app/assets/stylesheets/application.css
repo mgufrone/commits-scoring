@@ -10,6 +10,18 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
+ *= require bootstrap/dist/css/bootstrap.min
+ *= require bootstrap3-datetimepicker/build/css/bootstrap-datetimepicker.min
+ *= require bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min
+ *= require fontawesome/css/font-awesome.min
+ *= require ionicons/css/ionicons.min
+ *= require icheck/skins/all
+ *= require icheck/skins/flat/blue
+ *= require admin-lte/dist/css/AdminLTE.min
+ *= require admin-lte/dist/css/skins/skin-blue.min
+ *= require DataTables/media/css/jquery.dataTables.min
+ *= require DataTables/media/css/dataTables.bootstrap.min
+ *= require chosen
  *= require_self
+ *= require_tree .
  */
