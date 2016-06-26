@@ -79,8 +79,4 @@ test:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
 production:
-  host: 127.0.0.1
-  adapter: postgresql
-  database: finansor_production
-  username: finansor
-  password: <%= ENV['FINANSOR_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
