@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5.2'
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 0.15', group: :production
+gem 'mysql2', group: :production
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -42,6 +42,7 @@ gem 'rest-client'
 gem 'unicorn'
 # Template engine
 gem 'haml-rails'
+gem 'sinatra', :require => false
 # Assets management
 gem 'bower-rails'
 # Use for API Authorization
