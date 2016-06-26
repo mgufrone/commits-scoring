@@ -60,7 +60,6 @@ gem 'country_select'
 gem 'chosen-rails'
 
 # Use Capistrano for deployment
-gem 'capistrano-rails', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -68,6 +67,9 @@ group :development, :test do
 end
 
 group :development do
+  gem 'capistrano-rvm'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
   gem 'rspec-rails'

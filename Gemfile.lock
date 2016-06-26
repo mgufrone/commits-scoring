@@ -53,6 +53,9 @@ GEM
     capistrano-rails (1.1.6)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
     chosen-rails (1.4.3)
       coffee-rails (>= 3.2)
       compass-rails (>= 2.0.4)
@@ -316,7 +319,9 @@ DEPENDENCIES
   bcrypt (~> 3.1.7)
   bower-rails
   byebug
+  capistrano-bundler
   capistrano-rails
+  capistrano-rvm
   chosen-rails
   coffee-rails (~> 4.1.0)
   config
