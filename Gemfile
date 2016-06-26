@@ -58,7 +58,8 @@ gem 'simple_form'
 gem 'country_select'
 # jQuery Chosen Rails gem
 gem 'chosen-rails'
-
+gem 'sidekiq'
+gem 'sidekiq-cron'
 # Use Capistrano for deployment
 
 group :development, :test do
