@@ -1,3 +1,3 @@
-class UserProvider < ActiveRecord::Base
+class UserProvider < ApplicationRecord
   belongs_to :user
 end
