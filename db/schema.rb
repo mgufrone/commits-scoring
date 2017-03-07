@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307051906) do
+ActiveRecord::Schema.define(version: 20170307053910) do
 
   create_table "commits", force: :cascade do |t|
     t.string   "sha"
     t.datetime "commited_at"
     t.integer  "user_id"
     t.text     "message"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "repository_id"
+    t.index ["repository_id"], name: "index_commits_on_repository_id"
     t.index ["sha"], name: "index_commits_on_sha", unique: true
     t.index ["user_id"], name: "index_commits_on_user_id"
   end

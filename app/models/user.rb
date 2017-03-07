@@ -6,8 +6,6 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
-          # :registerable,
-        #  :recoverable,
          :rememberable, :trackable, :validatable,
          :lockable
   has_many :commits
@@ -32,12 +30,6 @@ class User < ApplicationRecord
     gravatar_url(email)
   end
   def password
-    # if self.id == nil
-    #   return nil
-    # end
-    # if encrypted_password == nil && self.id == nil
-    #   encrypted_password = Devise.friendly_token[10,20]
-    # end
     @password ||= Password.new(encrypted_password)
   end
 

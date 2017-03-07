@@ -1,15 +1,8 @@
-class PayloadController < ApplicationController
+class PayloadController < BaseController
+  skip_after_action :verify_policy_scoped, :verify_authorized
+  include PayloadHelper
+  skip_before_action :verify_authenticity_token
   def receive
-    author = User.find_or_create_by(username: commit[:author][:username])
-    Commit.create(
-
-    )
+    render json: {message: "Commit saved", commit: save_payload(params)}
   end
-  private
-    def commit
-      params[:head_commit]
-    end
-    def repository
-      params[:repository]
-    end
 end
