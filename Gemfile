@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '5.0.0'
+gem 'rails', '5.0.2'
 # Use postgresql as the database for Active Record
 gem 'mysql2', group: :production
 # Use SCSS for stylesheets
@@ -24,10 +24,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
-
+gem 'puma'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
-gem 'dotenv-rails', :require => 'dotenv/rails-now'
 
 # Omniauth
 gem 'omniauth'
@@ -44,7 +43,6 @@ gem 'rest-client'
 gem 'unicorn'
 # Template engine
 gem 'haml-rails'
-gem 'sinatra', :require => false
 # Assets management
 gem 'bower-rails'
 # Use for API Authorization
