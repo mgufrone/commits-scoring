@@ -10,7 +10,9 @@ class User < ApplicationRecord
         #  :recoverable,
          :rememberable, :trackable, :validatable,
          :lockable
-
+  has_many :commits
+  has_many :repositories, through: :commits
+  has_many :scores, through: :commits
   has_many :providers, class_name: "UserProvider"
   validates :email, presence: true, uniqueness: true
   validates :full_name, presence: true

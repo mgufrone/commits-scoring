@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160305233629) do
+ActiveRecord::Schema.define(version: 20170307051906) do
+
+  create_table "commits", force: :cascade do |t|
+    t.string   "sha"
+    t.datetime "commited_at"
+    t.integer  "user_id"
+    t.text     "message"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["sha"], name: "index_commits_on_sha", unique: true
+    t.index ["user_id"], name: "index_commits_on_user_id"
+  end
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", null: false
@@ -49,6 +60,26 @@ ActiveRecord::Schema.define(version: 20160305233629) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "repositories", force: :cascade do |t|
+    t.string   "url"
+    t.string   "name"
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_repositories_on_name", unique: true
+    t.index ["url"], name: "index_repositories_on_url", unique: true
+  end
+
+  create_table "scores", force: :cascade do |t|
+    t.integer  "commit_id"
+    t.integer  "user_id"
+    t.decimal  "score",      precision: 3, scale: 2
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.index ["commit_id"], name: "index_scores_on_commit_id"
+    t.index ["user_id"], name: "index_scores_on_user_id"
+  end
+
   create_table "user_providers", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "uid"
@@ -81,8 +112,10 @@ ActiveRecord::Schema.define(version: 20160305233629) do
     t.integer  "failed_attempts",        default: 0,  null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
 end
