@@ -15,6 +15,11 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :full_name, presence: true
   validates :phone, presence: true
+  scope :scored, -> {
+    joins("LEFT OUTER JOIN commits on commits.user_id = users.id").joins("LEFT OUTER JOIN scores on scores.commit_id = commits.id")
+    .select("AVG(scores.score) as average_score, users.*, COUNT(commits.id) as total_commits")
+    .group("users.id")
+  }
   def self.from_omniauth(auth)
     current = where(email: auth.info.email).first_or_create do |user|
       user.phone = user.email

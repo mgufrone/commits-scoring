@@ -10,13 +10,15 @@ module SlackHelper
             [
                 HelloBot.new(self),
                 CommitBot.new(self),
-                ScoringBot.new(self)
+                ScoringBot.new(self),
+                SummaryBot.new(self)
             ]
         end
         def process
             processed = false
             return if @message.match(Regexp.new("@#{@client.self.id}", Regexp::IGNORECASE | Regexp::MULTILINE | Regexp::EXTENDED)) == nil
             return if @data.user == @client.self.id
+            @message.gsub!(Regexp.new("\\<@#{@client.self.id}\\>", 'imx'), '').strip!
             processors.each do |bot|
                 if bot.pattern.match(@message) 
                     processed = true

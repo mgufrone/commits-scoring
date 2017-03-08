@@ -3,7 +3,26 @@ class CommitBot
        @client = client 
     end
     def pattern
-        /(?<state>scored|unscored)?\s?(?<order>latest|asc|ascending|descending|desc|oldest)?\s?commits\s?(?<date>)?/imx
+        /(?<action>scored|unscored)\s?(?<order>latest|asc|ascending|descending|desc|oldest)?\s?commits(\s?\s?at?\s?(?<date>[\w\d\-\:]+))?/imx
+    end
+    def refactory_users 
+        [
+            "hystolytc",
+            "ahmadahmadi14",
+            "deneuv34",
+            "erdivartanovich",
+            "htwibowo",
+            "kristoforusrp",
+            "awebr000",
+            "akbarrg",
+            "shilohchis",
+            "w4ndry",
+            "sutani",
+            "tyokusuma",
+            "prayuditb",
+            "rafi-isakh",
+            "syamsulanwr"
+        ]
     end
     def process(message, data)
        @client.send text: "Hold on", channel: data.channel
@@ -11,7 +30,7 @@ class CommitBot
        commits = Commit.all
        show_score = false
        matches = pattern.match(message)
-        case matches[:state]
+        case matches[:action]
         when "scored"
             commits = commits.scored            
             show_score = true
@@ -26,7 +45,10 @@ class CommitBot
         when "oldest", 'asc', 'ascending'
             commits = commits.oldest   
         end
-        attachments = commits.take(20).map do |commit|
+        if matches[:date] != nil
+            commits = commits.where('DATE(commits.commited_at) = ?', Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
+        end
+        attachments = commits.joins(:user).where('username in (?)', refactory_users).take(5).map do |commit|
             score = 0
             score = commit.scores.map {|score| score.score}.reduce(:+)/commit.scores.size if commit.scores.size > 0
             color = '#1B5E20' if score > 8.5
@@ -48,7 +70,7 @@ class CommitBot
                 text: "##{commit.id} - #{commit.sha}",
                 title: "##{commit.id} - #{commit.message}",
                 title_link: "#{commit.repository.url}/commit/#{commit.sha}",
-                author: commit.user.full_name,
+                author_name: commit.user.full_name,
                 ts: commit.commited_at.to_i
             }
         end

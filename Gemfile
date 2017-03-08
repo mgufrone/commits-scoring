@@ -20,6 +20,8 @@ gem 'octokit'
 gem 'slack-ruby-client'
 gem 'eventmachine'
 gem 'faye-websocket'
+gem 'chronic'
+gem 'picky'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -76,7 +78,7 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
-  gem 'capistrano-puma'
+  gem 'capistrano3-puma', github: "seuros/capistrano-puma"
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
   gem 'rspec-rails'
