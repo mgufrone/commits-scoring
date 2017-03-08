@@ -16,6 +16,10 @@ gem 'therubyracer', platforms: :ruby
 # DotEnv-based configuration
 gem 'dotenv-rails', :require => 'dotenv/rails-now'
 gem 'octokit'
+# Slack Integration
+gem 'slack-ruby-client'
+gem 'eventmachine'
+gem 'faye-websocket'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -72,6 +76,7 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
+  gem 'capistrano-puma'
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console'
   gem 'rspec-rails'

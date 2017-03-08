@@ -20,10 +20,11 @@ module PayloadHelper
             end
         end
         def save_payload
+            # puts "date time #{commit[:timestamp]}"
             Commit.find_or_create_by(sha: commit[:id]) do |new_commit|
                 new_commit.user = author
                 new_commit.message = commit[:message]
-                new_commit.commited_at = Date.parse(commit[:timestamp])
+                new_commit.commited_at = DateTime.parse(commit[:timestamp]).strftime('%Y-%m-%d %H:%M:%S')
                 new_commit.sha = commit[:id]
                 new_commit.repository = repository
             end

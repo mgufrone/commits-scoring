@@ -15,7 +15,7 @@ namespace :commit do
             head_commit: {
               author: commit.commit.author.to_h.merge(username: commit.author.login),
               message: commit.commit.message,
-              timestamp: commit.commit.committer.date.strftime('%Y-%m-%d %H:%M:%S'),
+              timestamp: DateTime.parse(commit.commit.committer.date.to_s).to_s,
               id: commit.sha
           },
           repository: repository.to_h

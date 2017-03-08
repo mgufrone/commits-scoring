@@ -105,11 +105,18 @@ GEM
       dotenv (= 2.2.0)
       railties (>= 3.2, < 5.1)
     erubis (2.7.0)
+    eventmachine (1.2.3)
     execjs (2.7.0)
     faker (1.7.3)
       i18n (~> 0.5)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
+    faraday_middleware (0.11.0.1)
+      faraday (>= 0.7.4, < 1.0)
+    faye-websocket (0.10.7)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    gli (2.15.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     gravatarify (3.1.1)
@@ -293,6 +300,14 @@ GEM
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
     sixarm_ruby_unaccent (1.1.1)
+    slack-ruby-client (0.7.9)
+      activesupport
+      faraday (>= 0.9)
+      faraday_middleware
+      gli
+      hashie
+      json
+      websocket-driver
     sort_alphabetical (1.1.0)
       unicode_utils (>= 1.2.2)
     spring (2.0.1)
@@ -356,7 +371,9 @@ DEPENDENCIES
   devise
   doorkeeper
   dotenv-rails
+  eventmachine
   faker
+  faye-websocket
   gravatarify
   haml-rails
   jbuilder (~> 2.0)
@@ -377,6 +394,7 @@ DEPENDENCIES
   sidekiq
   sidekiq-cron
   simple_form
+  slack-ruby-client
   spring
   sqlite3
   therubyracer
