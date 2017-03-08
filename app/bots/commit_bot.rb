@@ -13,8 +13,6 @@ class CommitBot
             "erdivartanovich",
             "htwibowo",
             "kristoforusrp",
-            "awebr000",
-            "akbarrg",
             "shilohchis",
             "w4ndry",
             "sutani",
@@ -43,7 +41,9 @@ class CommitBot
         when "latest", 'desc', 'descending'
             commits = commits.latest
         when "oldest", 'asc', 'ascending'
-            commits = commits.oldest   
+            commits = commits.oldest
+        else
+            commits = commits.latest
         end
         if matches[:date] != nil
             commits = commits.where('DATE(commits.commited_at) = ?', Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))

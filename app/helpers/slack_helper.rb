@@ -32,7 +32,7 @@ module SlackHelper
             @client.typing channel: @channel
         end
         def send(message)
-            @client.web_client.chat_postMessage message 
+            @client.web_client.chat_postMessage message.merge(icon_url: 'http://data.whicdn.com/images/108032712/large.jpg') 
         end
         def client
             @client
