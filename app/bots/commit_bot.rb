@@ -3,7 +3,7 @@ class CommitBot
        @client = client 
     end
     def pattern
-        /(?<action>scored|unscored)\s?(?<order>latest|asc|ascending|descending|desc|oldest)?\s?commits(\s?\s?at?\s?(?<date>[\w\d\-\:]+))?/imx
+        /(?<action>scored|unscored)\s?(?<order>latest|asc|ascending|descending|desc|oldest)?\s?commits(\s?\s?at?\s?(?<date>.+))?/imx
     end
     def refactory_users 
         [
@@ -71,6 +71,7 @@ class CommitBot
                 title: "##{commit.id} - #{commit.message}",
                 title_link: "#{commit.repository.url}/commit/#{commit.sha}",
                 author_name: commit.user.full_name,
+                author_link: "https://github.com/#{commit.user.username}",
                 ts: commit.commited_at.to_i
             }
         end
