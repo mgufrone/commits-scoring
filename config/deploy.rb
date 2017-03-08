@@ -38,6 +38,7 @@ namespace :bundler do
     on roles(:web), in: :groups, limit: 3, wait: 10 do
       within release_path do
         execute :mv, ".env.production .env"
+        execute :bundle, "exec rails bower:install"
       end
     end
   end
