@@ -3,7 +3,7 @@ class ScoringBot
         @client = client
     end
     def pattern
-        /(mark|score)\s(for)?(?<commit>\d+)\s?to?\s?(?<score>[\d\,\.]+)/imx
+        /(mark|score)\s(for)?(?<commit>\d+)\s(to|is)?\s?(?<score>[\d\,\.]+)/imx
     end
     def process(message, data) 
         matches = pattern.match(message)
