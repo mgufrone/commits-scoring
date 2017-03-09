@@ -3,7 +3,7 @@ class SummaryBot
         @client = client
     end
     def pattern
-        /(?<action>summary)|(?<user>[\@a-zA-Z\d]+)\'s?\s(?<action>performance)/imx
+        /(?<action>summary|report)|((?<user>[\@a-zA-Z\d]+)\'s?\sperformance)/imx
     end
     def order_pattern
         /(order|sort)\s?by?\s?(?<column>[\w\s]+)?\s?(?<direction>asc|desc|ascending|descending|highest|lowest)/imx
