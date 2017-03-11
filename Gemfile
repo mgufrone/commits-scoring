@@ -17,6 +17,8 @@ gem 'therubyracer', platforms: :ruby
 gem 'dotenv-rails', :require => 'dotenv/rails-now'
 gem 'octokit'
 gem 'dotenv'
+gem 'regexp-examples'
+
 # Slack Integration
 gem 'slack-ruby-bot'
 gem 'celluloid-io'

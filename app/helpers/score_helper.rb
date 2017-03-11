@@ -1,4 +1,5 @@
 module ScoreHelper
+    include CommitsHelper
     def scorer(data)
         user = @web_client.users_info user: data
         User.find_or_create_by(username: user.user.name) do |current|

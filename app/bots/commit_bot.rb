@@ -1,26 +1,10 @@
 class CommitBot
+    include CommitsHelper
     def initialize(client)
        @client = client 
     end
     def pattern
         /(?<action>scored|unscored)\s?(?<order>latest|asc|ascending|descending|desc|oldest)?\s?commits(\s?\s?at?\s?(?<date>.+))?/imx
-    end
-    def refactory_users 
-        [
-            "hystolytc",
-            "ahmadahmadi14",
-            "deneuv34",
-            "erdivartanovich",
-            "htwibowo",
-            "kristoforusrp",
-            "shilohchis",
-            "w4ndry",
-            "sutani",
-            "tyokusuma",
-            "prayuditb",
-            "rafi-isakh",
-            "syamsulanwr"
-        ]
     end
     def process(message, data)
        @client.send text: "Hold on", channel: data.channel

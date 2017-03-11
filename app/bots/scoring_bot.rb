@@ -1,5 +1,6 @@
 class ScoringBot
     include ScoreHelper
+    include AskingHelper
     def initialize(client)
         @client = client
     end
@@ -13,9 +14,13 @@ class ScoringBot
         scorer = scorer(data.user)
         begin
             save_score(matches[:commit], scorer, matches[:score].gsub(',','.').to_f)
-            @client.send text: "Score saved. Thanks <@#{data.user}>", channel: data.channel
+            @client.send text: asking_sentence, channel: data.channel, attachments: [attachment(last_unscored_commit)].to_json
         rescue => e
             @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>"
         end
+    end
+    def send_another_commit
+        last_commit_attachment = attachment(last_unscored_commit)
+
     end
 end
