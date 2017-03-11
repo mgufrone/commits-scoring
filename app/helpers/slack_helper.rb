@@ -12,7 +12,8 @@ module SlackHelper
                 HelloBot.new(self),
                 CommitBot.new(self),
                 ScoringBot.new(self),
-                SummaryBot.new(self)
+                SummaryBot.new(self),
+                HelpBot.new(self)
             ]
         end
         def process
