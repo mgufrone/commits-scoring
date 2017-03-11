@@ -3,7 +3,7 @@ class HelloBot
         @client = client
     end
     def pattern
-        /hello/i
+        /hello|hai|whats? up|hi|hola/i
     end
     def process(message, data)
         @client.typing

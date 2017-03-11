@@ -16,7 +16,13 @@ class ScoringBot
             save_score(matches[:commit], scorer, matches[:score].gsub(',','.').to_f)
             @client.send text: asking_sentence, channel: data.channel, attachments: [attachment(last_unscored_commit)].to_json
         rescue => e
-            @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>"
+            @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>", channel: data.channel, attachments: [{
+                color: '#ff0000',
+                fallback: 'Error',
+                text: 'Trace:\n#{e.backtrace}',
+                mrkdwn_in: ["text"]
+            }]
+            raise
         end
     end
     def send_another_commit
