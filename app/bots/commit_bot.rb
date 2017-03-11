@@ -76,8 +76,6 @@ class CommitBot
             {
                 color: color,
                 fields: fields,
-                callback_id: commit.id,
-                actions: actions,
                 text: "##{commit.id} - #{commit.sha}",
                 title: "##{commit.id} - #{commit.message}",
                 title_link: "#{commit.repository.url}/commit/#{commit.sha}",
