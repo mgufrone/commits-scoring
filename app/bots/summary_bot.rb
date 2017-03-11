@@ -151,6 +151,10 @@ class SummaryBot
                 ts: Time.now.to_i
             }
         end
-        @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
+        if attachments.size > 0
+            @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
+        else 
+            @client.send channel: @data.channel, text: "Sorry no report for that query. you can try other date, <@#{data.user}>"
+        end
     end
 end
