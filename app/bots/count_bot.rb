@@ -13,33 +13,37 @@ class CountBot
         end_date = matches[:end_date]
         commits = Commit.joins(:user).where('username in (?)', refactory_users)
         commits = commits.where('DATE(commited_at) = ?', Chronic.parse(date).strftime('%Y-%m-%d')) if date != nil
-        commits = commits.where('DATE(comnited_at) BETWEEN ? AND ?', Chronic.parse(start_date).strftime('%Y-%m-%d'), Chronic.parse(end_date).strftime('%Y-%m-%d')) unless date != nil
+        if start_date != nil and end_date != nil
+            commits = commits.where('DATE(commited_at) BETWEEN ? AND ?', Chronic.parse(start_date).strftime('%Y-%m-%d'), Chronic.parse(end_date).strftime('%Y-%m-%d')) 
+        end
         total_commits = commits.count
-        scored_commits = commits.scored.count
-        unscored_commits = commits.unscored.count
+        scored_commits = commits.scored.count.count
+        unscored_commits = commits.unscored.count.count
         fields = []
         fields << {
-            small: true,
-            text: "Total Commits",
+            short: true,
+            title: "Total Commits",
             value: total_commits
         }
         fields << {
-            small: true,
-            text: "Scored Commits",
-            value: scored_commits
+            short: true,
+            title: "Scored Commits",
+            value: scored_commits || 0
         }
         fields << {
-            small: true,
-            text: "Unscored commits",
-            value: unscored_commits
+            short: true,
+            title: "Unscored commits",
+            value: unscored_commits || 0
         }
 
         attachments = []
         attachments << {
             title: "Summary for all saved commits",
             small: true,
-            fields: fields
+            fields: fields,
+            text: "Commit Summary for Refactory"
         }
+        puts attachments.to_json
         @client.typing
         @client.send text: "<@#{data.user}> This is what you need!", channel: data.channel, attachments: attachments.to_json
     end
