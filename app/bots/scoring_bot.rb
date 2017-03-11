@@ -13,7 +13,7 @@ class ScoringBot
         commit = Commit.find(matches[:commit])
         scorer = scorer(data.user)
         save_score(matches[:commit], scorer, matches[:score].gsub(',','.').to_f)
-        Octokit.create_commit_comment commit.repository.full_name, commit.sha, "Score: #{matches[:score].gsub(',','.').to_f}"
+        Octokit.create_commit_comment commit.repository.name, commit.sha, "Score: #{matches[:score].gsub(',','.').to_f}"
         @client.send text: "<@#{data.user}> #{asking_sentence}", channel: data.channel, attachments: [attachment(last_unscored_commit)].to_json
     end
 end
