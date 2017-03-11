@@ -8,6 +8,7 @@ module SlackHelper
         end
         def processors
             [
+                CountBot.new(self),
                 HelloBot.new(self),
                 CommitBot.new(self),
                 ScoringBot.new(self),
