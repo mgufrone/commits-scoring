@@ -1,10 +1,10 @@
 module AskingHelper
     include GratitudeHelper
     def asking_sentence
-        sentence = pattern.shuffle.first.examples.first
+        sentence = asking_pattern.shuffle.first.examples.first
         sentence.gsub!("{gratitude}", gratitude_word)
     end
-    def pattern
+    def asking_pattern
         [
             /\{gratitude\}\! This one also need your attention\./,
             /\{gratitude\}\! what about this\?/,
