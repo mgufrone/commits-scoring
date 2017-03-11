@@ -19,6 +19,7 @@ class ScoringBot
             @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>", channel: data.channel, attachments: [{
                 color: '#ff0000',
                 fallback: 'Error',
+                title: "Error: #{e.message}",
                 text: "Trace:\n#{e.backtrace}",
                 mrkdwn_in: ["text"]
             }]
