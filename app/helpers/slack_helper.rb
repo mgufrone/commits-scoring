@@ -37,7 +37,7 @@ module SlackHelper
                     title: "Error: #{e.message}",
                     text: "Trace:\n#{e.backtrace}",
                     mrkdwn_in: ["text"]
-                }]
+                }].to_json
                 raise
             end
         end
