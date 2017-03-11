@@ -16,8 +16,10 @@ gem 'therubyracer', platforms: :ruby
 # DotEnv-based configuration
 gem 'dotenv-rails', :require => 'dotenv/rails-now'
 gem 'octokit'
+gem 'dotenv'
 # Slack Integration
-gem 'slack-ruby-client'
+gem 'slack-ruby-bot'
+gem 'celluloid-io'
 gem 'eventmachine'
 gem 'faye-websocket'
 gem 'chronic'

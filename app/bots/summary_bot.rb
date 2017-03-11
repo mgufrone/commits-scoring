@@ -3,7 +3,7 @@ class SummaryBot
         @client = client
     end
     def pattern
-        /(?<action>summary|report|performance(\sof|\sfor)?)\s?(?<user>[\@a-zA-Z\d]+)/imx
+        /(?<action>summary|report)\s?|(?<user>my)?\s?(performance\s(of|for)?(?<user>[\@a-zA-Z\d]+))/imx
     end
     def order_pattern
         /(order|sort)\s?by?\s?(?<column>[\w\s]+)?\s?(?<direction>asc|desc|ascending|descending|highest|lowest)/imx
@@ -151,8 +151,6 @@ class SummaryBot
                 ts: Time.now.to_i
             }
         end
-        puts users.order("#{order_column} #{order_direction}").to_sql
-        puts attachments.to_json
         @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
     end
 end
