@@ -57,6 +57,15 @@ class CommitBot
             color = '#B71C1C' if score <= 6.5
             color = '#757575' if score == 0
             fields = []
+            actions = []
+            1.upto(10) do |score|
+                actions << {
+                    name: "score",
+                    text: score,
+                    type: "button",
+                    value: score
+                }
+            end
             fields = [
                 {
                     title: "Score",
@@ -67,6 +76,8 @@ class CommitBot
             {
                 color: color,
                 fields: fields,
+                callback_id: commit.id,
+                actions: actions,
                 text: "##{commit.id} - #{commit.sha}",
                 title: "##{commit.id} - #{commit.message}",
                 title_link: "#{commit.repository.url}/commit/#{commit.sha}",
