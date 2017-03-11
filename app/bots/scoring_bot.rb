@@ -14,7 +14,7 @@ class ScoringBot
         scorer = scorer(data.user)
         begin
             save_score(matches[:commit], scorer, matches[:score].gsub(',','.').to_f)
-            @client.send text: asking_sentence, channel: data.channel, attachments: [attachment(last_unscored_commit)].to_json
+            @client.send text: "<@#{data.user}> #{asking_sentence}", channel: data.channel, attachments: [attachment(last_unscored_commit)].to_json
         rescue => e
             @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>", channel: data.channel, attachments: [{
                 color: '#ff0000',
