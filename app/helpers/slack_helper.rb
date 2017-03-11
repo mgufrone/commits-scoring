@@ -21,14 +21,25 @@ module SlackHelper
             return if @message.match(Regexp.new("@#{@client.self.id}", Regexp::IGNORECASE | Regexp::MULTILINE | Regexp::EXTENDED)) == nil
             return if @data.user == @client.self.id
             @message.gsub!(Regexp.new("\\<@#{@client.self.id}\\>", 'imx'), '').strip!
-            processors.each do |bot|
-                if bot.pattern.match(@message) 
-                    processed = true
-                    bot.process(@message, @data)
-                    return
+            begin
+                processors.each do |bot|
+                    if bot.pattern.match(@message) 
+                        processed = true
+                        bot.process(@message, @data)
+                        return
+                    end
                 end
+                StupidBot.new(self).process(@message, @data)
+            rescue => e
+                @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>", channel: data.channel, attachments: [{
+                    color: '#ff0000',
+                    fallback: 'Error',
+                    title: "Error: #{e.message}",
+                    text: "Trace:\n#{e.backtrace}",
+                    mrkdwn_in: ["text"]
+                }]
+                raise
             end
-            StupidBot.new(self).process(@message, @data)
         end
         def typing
             @client.typing channel: @channel
