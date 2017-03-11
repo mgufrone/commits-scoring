@@ -31,7 +31,7 @@ module SlackHelper
                 end
                 StupidBot.new(self).process(@message, @data)
             rescue => e
-                @client.send text: "Something went wrong. Check the commit id please! <@#{data.user}>", channel: @channel, attachments: [{
+                @client.send text: "Something went wrong, <@#{@data.user}>", channel: @channel, attachments: [{
                     color: '#ff0000',
                     fallback: 'Error',
                     title: "Error: #{e.message}",
