@@ -129,7 +129,7 @@ class SummaryBot
            {
                 color: '#1B5E20',
                 fields: fields,
-                title: "##{key}. #{user.full_name}",
+                title: "##{key + 1}. #{user.full_name}",
                 text: "Summary for #{user.full_name}",
                 author_name: 'Policia',
                 ts: Time.now.to_i
