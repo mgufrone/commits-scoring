@@ -45,12 +45,12 @@ class SummaryBot
         commits = user_find.commits
         scores = user_find.scores
         repositories = user_find.repositories
-        if matches != nil and matches[:starts_at] != nil and matches[:ends_at] != nil
+        if matches != nil and matches.names.include?("starts_at") and matches.names.include?("ends_at") and matches[:starts_at] != nil and matches[:ends_at] != nil
             commits = commits.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
             scores = scores.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
             repositories = repositories.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
         end
-        if matches != nil and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+        if matches != nil and matches.names.include?("date") and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
             commits = commits.where('DATE(commited_at) = ?', Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
             scores = scores.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
             repositories = repositories.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
@@ -85,10 +85,11 @@ class SummaryBot
     def send_summary(matches)
         users = User.scored.where("username IN (?)", refactory_users)
         attachments = []
-        if matches != nil and matches.names.include?(:starts_at) and matches.names.include?(:ends_at) and matches[:starts_at] != nil and matches[:ends_at] != nil
-           users = users.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
+        if matches != nil and matches.names.include?("starts_at") and matches.names.include?("ends_at") and matches[:starts_at] != nil and matches[:ends_at] != nil
+           users = users.where("DATE(commited_at) BETWEEN ? AND ?", Chronic.parse(matches[:starts_at]).strftime('%Y-%m-%d'), Chronic.parse(matches[:ends_at]).strftime('%Y-%m-%d'))
         end
-        if matches != nil and matches.names.include?(:date) and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+        if matches != nil and matches.names.include?("date") and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+            puts "I should be triggered"
            users = users.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
         end
         order_column = "sum_score"
@@ -139,7 +140,7 @@ class SummaryBot
             attachments.reverse!
             @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
         else 
-            @client.send channel: @data.channel, text: "Sorry no report for that query. you can try other date, <@#{data.user}>"
+            @client.send channel: @data.channel, text: "Sorry no report for that query. you can try other date, <@#{@data.user}>"
         end
     end
 end
