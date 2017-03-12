@@ -129,7 +129,7 @@ class SummaryBot
             attachments << {
                 color: '#1B5E20',
                 fields: fields,
-                title: "#{users.count - key}. #{user.full_name}",
+                title: "#{users.size - key}. #{user.full_name}",
                 text: "Summary for #{user.full_name}",
                 author_name: 'Policia',
                 ts: Time.now.to_i
