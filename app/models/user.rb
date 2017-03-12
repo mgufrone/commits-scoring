@@ -17,7 +17,7 @@ class User < ApplicationRecord
   validates :phone, presence: true
   scope :scored, -> {
     joins("LEFT OUTER JOIN commits on commits.user_id = users.id").joins("LEFT OUTER JOIN scores on scores.commit_id = commits.id")
-    .select("AVG(scores.score) as average_score, users.*, COUNT(commits.id) as total_commits")
+    .select("SUM(scores.score) as average_score, users.*, COUNT(commits.id) as total_commits")
     .group("users.id")
   }
   def self.from_omniauth(auth)

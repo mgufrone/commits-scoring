@@ -1,12 +1,24 @@
 class SummaryBot
+    include CommitsHelper
     def initialize(client)
         @client = client
     end
     def pattern
-        /(?<action>summary|report)\s?|(?<user>my)?\s?(performance\s(of|for)\s(?<user>[\@a-zA-Z\d]+))/imx
+        /(((?<action>summary|report)
+          (\s(order|sort)\s?(by\s)?(?<column>\w+)?\s?(?<direction>asc|desc|highest|lowest))?
+           )|((performance\s(of|for)\s(\<?\(?<user>[\@\w\_\d]+)\>)))
+          )(\s(
+              (start|from|at|for|between)\s
+                (
+                    (?<start_at>.+)\s(and|to|until|till|-)\s(?<ends_at>.+)
+                    |
+                    (?<date>.+)
+                 )
+            )
+          )?/mix
     end
     def order_pattern
-        /(order|sort)\s?by?\s?(?<column>[\w\s]+)?\s?(?<direction>asc|desc|ascending|descending|highest|lowest)/imx
+        /(order|sort)\s?by\s?(?<column>[\w\s]+)?\s?(?<direction>asc|desc|ascending|descending|highest|lowest)/imx
     end
     def period_pattern
         /(at|for)\s?(?<period>[\w\d\-\:]+)/imx
@@ -29,7 +41,7 @@ class SummaryBot
         user_lookup = matches[:user]
         if /my|me/.match(user_lookup) != nil 
             user_lookup = @data.user
-        elsif /@/.match(matches[:user]) == nil
+        elsif matches[:user].include?('@') == nil
             users = @client.client.web_client.users_list[:members].select do |user|
                 user.name =~ Regexp.new(matches[:user], 'imx') or user.profile.real_name =~ Regexp.new(matches[:user], 'imx')
             end
@@ -55,7 +67,7 @@ class SummaryBot
             repositories = repositories.where("DATE(commits.commited_at) = ?", Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
         end
         fields = []
-        score = scores.average(:score) || 0
+        score = scores.sum(:score) || 0
         fields << {
             title: "Average Commit Score",
             value: "#{score} (from evaluated commits: #{commits.scored.to_a.count})",
@@ -80,25 +92,6 @@ class SummaryBot
             ts: Time.now.to_i
         }]
         @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
-    end
-    def refactory_users 
-        [
-            "hystolytc",
-            "ahmadahmadi14",
-            "deneuv34",
-            "erdivartanovich",
-            "htwibowo",
-            "kristoforusrp",
-            "awebr000",
-            "akbarrg",
-            "shilohchis",
-            "w4ndry",
-            "sutani",
-            "tyokusuma",
-            "prayuditb",
-            "rafi-isakh",
-            "syamsulanwr"
-        ]
     end
     def send_summary(matches)
         users = User.scored.where("username IN (?)", refactory_users)
@@ -130,7 +123,7 @@ class SummaryBot
                 end
             end
         end
-        users.order("#{order_column} #{order_direction}").each_with_index.map do |user, key|
+        users.order("#{order_column} #{order_direction}").reverse.each_with_index.map do |user, key|
             fields = []
             fields << {
                 title: "Average Commit Score",
@@ -145,7 +138,7 @@ class SummaryBot
             attachments << {
                 color: '#1B5E20',
                 fields: fields,
-                title: "#{key+1}. #{user.full_name}",
+                title: "#{users.count - key}. #{user.full_name}",
                 text: "Summary for #{user.full_name}",
                 author_name: 'Policia',
                 ts: Time.now.to_i
