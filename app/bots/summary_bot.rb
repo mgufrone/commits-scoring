@@ -27,7 +27,7 @@ class SummaryBot
         @client.typing
         matches = pattern.match message
         @message_left = message.gsub(pattern, '').gsub(Regexp.new("\\<@#{@client.client.self.id}\\>"), '')
-        return send_single_user(matches) if matches[:user] != nil
+        return send_single_user(matches) if matches.include?(:user) and matches[:user] != nil
         send_summary(matches)
     end
     def send_single_user(matches)
