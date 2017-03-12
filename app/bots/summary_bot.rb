@@ -136,6 +136,7 @@ class SummaryBot
            }
         end
         if attachments.size > 0
+            attachments.reverse!
             @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
         else 
             @client.send channel: @data.channel, text: "Sorry no report for that query. you can try other date, <@#{data.user}>"
