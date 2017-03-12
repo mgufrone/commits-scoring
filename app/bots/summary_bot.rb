@@ -4,9 +4,11 @@ class SummaryBot
         @client = client
     end
     def pattern
-        /(((?<action>summary|report)
-          (\s(order|sort)\s?(by\s)?(?<column>\w+)?\s?(?<direction>asc|desc|highest|lowest))?
-           )|((performance\s(of|for)\s(\<?\(?<user>[\@\w\_\d]+)\>)))
+        /(
+            (
+                (?<action>summary|report)
+                (\s(order|sort)\s?(by\s)?(?<column>\w+)?\s?(?<direction>asc|desc|highest|lowest))?
+           )|((performance\s(of|for)\s(\<?\(?<user>[\@\w\_\d]+)\>))
           )(\s(
               (start|from|at|for|between)\s
                 (
@@ -16,15 +18,6 @@ class SummaryBot
                  )
             )
           )?/mix
-    end
-    def order_pattern
-        /(order|sort)\s?by\s?(?<column>[\w\s]+)?\s?(?<direction>asc|desc|ascending|descending|highest|lowest)/imx
-    end
-    def period_pattern
-        /(at|for)\s?(?<period>[\w\d\-\:]+)/imx
-    end
-    def range_pattern
-        /(starts?)\s?(from|at)?\s?(?<start_at>.+)\s(to|until|till|-)\s(?<ends_at>.+)/imx
     end
     def process(message, data)
         @message = message
@@ -49,22 +42,18 @@ class SummaryBot
         end
         user = @client.client.web_client.users_info user: user_lookup
         user_find = User.where("username like ? or full_name like ? or full_name like ? or email like ?", "%#{user.user.name}%", "%#{user.user.real_name.split(' ').first}%", "%#{user.user.profile.real_name.split(' ').last}%", "%#{user.user.profile.email}%").first
-        range_matches = range_pattern.match @message_left
-        order_matches = order_pattern.match @message_left
-        @last_message = @message_left.gsub(range_pattern, '').gsub(order_pattern, '')
-        period_matches = period_pattern.match @last_message
         commits = user_find.commits
         scores = user_find.scores
         repositories = user_find.repositories
-        if range_matches != nil and range_matches[:starts_at] != nil and range_matches[:ends_at] != nil
-            commits = commits.where(commited_at: Chronic.parse(range_matches[:starts_at])..Chronic.parse(range_matches[:ends_at]))
-            scores = scores.where(commited_at: Chronic.parse(range_matches[:starts_at])..Chronic.parse(range_matches[:ends_at]))
-            repositories = repositories.where(commited_at: Chronic.parse(range_matches[:starts_at])..Chronic.parse(range_matches[:ends_at]))
+        if matches != nil and matches[:starts_at] != nil and matches[:ends_at] != nil
+            commits = commits.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
+            scores = scores.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
+            repositories = repositories.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
         end
-        if period_matches != nil and period_matches[:period] != nil and Chronic.parse(period_matches[:period]) != nil
-            commits = commits.where('DATE(commited_at) = ?', Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
-            scores = scores.where("DATE(commits.commited_at) = ?", Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
-            repositories = repositories.where("DATE(commits.commited_at) = ?", Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
+        if matches != nil and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+            commits = commits.where('DATE(commited_at) = ?', Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
+            scores = scores.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
+            repositories = repositories.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
         end
         fields = []
         score = scores.sum(:score) || 0
@@ -96,15 +85,11 @@ class SummaryBot
     def send_summary(matches)
         users = User.scored.where("username IN (?)", refactory_users)
         attachments = []
-        range_matches = range_pattern.match @message_left
-        order_matches = order_pattern.match @message_left
-        @last_message = @message_left.gsub(range_pattern, '').gsub(order_pattern, '')
-        period_matches = period_pattern.match @last_message
-        if range_matches != nil and range_matches[:starts_at] != nil and range_matches[:ends_at] != nil
-           users = users.where(commited_at: Chronic.parse(range_matches[:starts_at])..Chronic.parse(range_matches[:ends_at]))
+        if matches != nil and matches[:starts_at] != nil and matches[:ends_at] != nil
+           users = users.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
         end
-        if period_matches != nil and period_matches[:period] != nil and Chronic.parse(period_matches[:period]) != nil
-           users = users.where("DATE(commits.commited_at) = ?", Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
+        if matches != nil and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+           users = users.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
         end
         order_column = "sum_score"
         order_direction = "desc"
