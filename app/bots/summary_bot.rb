@@ -8,7 +8,7 @@ class SummaryBot
             (
                 (?<action>summary|report)
                 (\s(order|sort)\s?(by\s)?(?<column>\w+)?\s?(?<direction>asc|desc|highest|lowest))?
-           )|((performance\s(of|for)\s(\<?\(?<user>[\@\w\_\d]+)\>))
+           )|((performance\s(of|for)\s(\<?\(?<user>[\@\w\_\d]+)\>?))
           )(\s(
               (start|from|at|for|between)\s
                 (

@@ -31,13 +31,13 @@ module SlackHelper
                 end
                 StupidBot.new(self).process(@message, @data)
             rescue => e
-                @client.send text: "Something went wrong, <@#{@data.user}>", channel: @channel, attachments: [{
+                @client.send(text: "Something went wrong, <@#{@data.user}>", channel: @channel, attachments: [{
                     color: '#ff0000',
                     fallback: 'Error',
                     title: "Error: #{e.message}",
                     text: "Trace:\n#{e.backtrace}",
                     mrkdwn_in: ["text"]
-                }].to_json
+                }].to_json)
                 raise
             end
         end
