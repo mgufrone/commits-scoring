@@ -108,7 +108,7 @@ class SummaryBot
                 end
             end
         end
-        users.order("#{order_column} #{order_direction}").reverse.each_with_index.map do |user, key|
+        attachments = users.order("#{order_column} #{order_direction}").each_with_index.map do |user, key|
             fields = []
             fields << {
                 title: "Sum of Commit Score",
@@ -126,14 +126,14 @@ class SummaryBot
                 value: user[:total_commits],
                 short: true
            }
-            attachments << {
+           {
                 color: '#1B5E20',
                 fields: fields,
-                title: "#{users.size - key}. #{user.full_name}",
+                title: "##{key}. #{user.full_name}",
                 text: "Summary for #{user.full_name}",
                 author_name: 'Policia',
                 ts: Time.now.to_i
-            }
+           }
         end
         if attachments.size > 0
             @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
