@@ -27,7 +27,7 @@ class SummaryBot
         @client.typing
         matches = pattern.match message
         @message_left = message.gsub(pattern, '').gsub(Regexp.new("\\<@#{@client.client.self.id}\\>"), '')
-        return send_single_user(matches) if matches.include?(:user) and matches[:user] != nil
+        return send_single_user(matches) if matches.names.include?(:user) and matches[:user] != nil
         send_summary(matches)
     end
     def send_single_user(matches)
@@ -85,22 +85,22 @@ class SummaryBot
     def send_summary(matches)
         users = User.scored.where("username IN (?)", refactory_users)
         attachments = []
-        if matches != nil and matches[:starts_at] != nil and matches[:ends_at] != nil
+        if matches != nil and matches.names.include?(:starts_at) and matches.names.include?(:ends_at) and matches[:starts_at] != nil and matches[:ends_at] != nil
            users = users.where(commited_at: Chronic.parse(matches[:starts_at])..Chronic.parse(matches[:ends_at]))
         end
-        if matches != nil and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
+        if matches != nil and matches.names.include?(:date) and matches[:date] != nil and Chronic.parse(matches[:date]) != nil
            users = users.where("DATE(commits.commited_at) = ?", Chronic.parse(matches[:date]).strftime('%Y-%m-%d'))
         end
         order_column = "sum_score"
         order_direction = "desc"
         available_columns = ["average_score", "sum_score", "full_name", "total_commits"]
-        if order_matches != nil
-            if order_matches[:column] != nil
-                column = order_matches[:column].strip!.gsub(' ', '_').underscore
+        if matches != nil
+            if matches.names.include?(:column) and matches[:column] != nil
+                column = matches[:column].strip!.gsub(' ', '_').underscore
                 order_column = column if available_columns.include?(column)
             end
-            if order_matches[:direction] != nil
-                case order_matches[:direction]
+            if matches.names.include?(:direction) and matches[:direction] != nil
+                case matches[:direction]
                 when "asc", "ascending", "lowest"
                     order_direction = "asc"
                 when "desc", "descending", "highest"
