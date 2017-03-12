@@ -106,9 +106,9 @@ class SummaryBot
         if period_matches != nil and period_matches[:period] != nil and Chronic.parse(period_matches[:period]) != nil
            users = users.where("DATE(commits.commited_at) = ?", Chronic.parse(period_matches[:period]).strftime('%Y-%m-%d'))
         end
-        order_column = "average_score"
+        order_column = "sum_score"
         order_direction = "desc"
-        available_columns = ["average_score", "full_name", "total_commits"]
+        available_columns = ["average_score", "sum_score", "full_name", "total_commits"]
         if order_matches != nil
             if order_matches[:column] != nil
                 column = order_matches[:column].strip!.gsub(' ', '_').underscore
@@ -125,6 +125,12 @@ class SummaryBot
         end
         users.order("#{order_column} #{order_direction}").reverse.each_with_index.map do |user, key|
             fields = []
+            fields << {
+                title: "Sum of Commit Score",
+                value: user[:sum_score] || 0,
+                short: true
+            }
+
             fields << {
                 title: "Average Commit Score",
                 value: user[:average_score] || 0,
