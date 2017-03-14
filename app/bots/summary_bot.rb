@@ -113,13 +113,13 @@ class SummaryBot
             fields = []
             fields << {
                 title: "Sum of Commit Score",
-                value: user[:sum_score] || 0,
+                value: sprintf("%.2f", user[:sum_score] || 0),
                 short: true
             }
 
             fields << {
                 title: "Average Commit Score",
-                value: user[:average_score] || 0,
+                value: sprintf("%.2f", user[:average_score] || 0),
                 short: true
             }
             fields << {
