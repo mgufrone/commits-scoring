@@ -69,9 +69,9 @@ class CommitBot
             }
         end
         if attachments.size > 0
-            @client.send text: "There you go, <@{data.user}>", channel: data.channel, attachments: attachments.to_json
+            @client.send text: "There you go, <@#{data.user}>", channel: data.channel, attachments: attachments.to_json
         else 
-            @client.send text: "I got nothing, <@{data.user}>", channel: data.channel 
+            @client.send text: "I got nothing, <@#{data.user}>", channel: data.channel 
         end
     end
 end
