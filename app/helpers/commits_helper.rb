@@ -1,6 +1,6 @@
 module CommitsHelper
     def last_unscored_commit
-        Commit.unscored.latest.joins(:user).where('username IN (?)', refactory_users).first
+        Commit.unscored.latest.joins(:user).where('username IN (?) and message not like ?', refactory_users, '%merge%').first
     end
     def refactory_users 
         [
