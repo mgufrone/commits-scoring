@@ -11,7 +11,7 @@ class CountBot
         date = matches[:date]
         start_date = matches[:start_date]
         end_date = matches[:end_date]
-        commits = Commit.joins(:user).where('username in (?)', refactory_users)
+        commits = Commit.joins(:user).where('username in (?) and message not like ?', refactory_users, '%merge%')
         commits = commits.where('DATE(commited_at) = ?', Chronic.parse(date).strftime('%Y-%m-%d')) if date != nil
         if start_date != nil and end_date != nil
             commits = commits.where('DATE(commited_at) BETWEEN ? AND ?', Chronic.parse(start_date).strftime('%Y-%m-%d'), Chronic.parse(end_date).strftime('%Y-%m-%d')) 

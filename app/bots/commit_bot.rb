@@ -9,7 +9,7 @@ class CommitBot
     def process(message, data)
        @client.send text: "Hold on", channel: data.channel
        @client.typing 
-       commits = Commit.all
+       commits = Commit.where('message not like ?', '%merge%')
        show_score = false
        matches = pattern.match(message)
         case matches[:action]

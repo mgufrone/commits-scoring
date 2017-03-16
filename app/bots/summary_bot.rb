@@ -42,7 +42,7 @@ class SummaryBot
         end
         user = @client.client.web_client.users_info user: user_lookup
         user_find = User.where("username like ? or full_name like ? or full_name like ? or email like ?", "%#{user.user.name}%", "%#{user.user.real_name.split(' ').first}%", "%#{user.user.profile.real_name.split(' ').last}%", "%#{user.user.profile.email}%").first
-        commits = user_find.commits
+        commits = user_find.commits.where("message not like ?", '%merge%')
         scores = user_find.scores
         repositories = user_find.repositories
         if matches != nil and matches.names.include?("starts_at") and matches.names.include?("ends_at") and matches[:starts_at] != nil and matches[:ends_at] != nil
