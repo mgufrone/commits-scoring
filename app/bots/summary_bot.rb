@@ -83,7 +83,7 @@ class SummaryBot
         @client.send channel: @data.channel, text: "There you go <@#{@data.user}>", attachments: attachments.to_json
     end
     def send_summary(matches)
-        users = User.scored.where("username IN (?)", refactory_users)
+        users = User.scored.where("username IN (?) and message not like ?", refactory_users, '%merge%')
         attachments = []
         if matches != nil and matches.names.include?("starts_at") and matches.names.include?("ends_at") and matches[:starts_at] != nil and matches[:ends_at] != nil
            users = users.where("DATE(commited_at) BETWEEN ? AND ?", Chronic.parse(matches[:starts_at]).strftime('%Y-%m-%d'), Chronic.parse(matches[:ends_at]).strftime('%Y-%m-%d'))
